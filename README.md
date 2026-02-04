@@ -44,8 +44,8 @@ A smart calorie tracking mobile app with AI-powered food recognition using Googl
 
 1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
-cd calorie-tracker
+git clone https://github.com/k-r-i-s-h-h/calorie-Tracker.git
+cd calorie-Tracker
 ```
 
 2. **Install frontend dependencies**
@@ -133,7 +133,9 @@ MIT
 
 ## 👨‍💻 Author
 
-Built by [Your Name]
+Built by Krish
+
+🔗 [GitHub Repository](https://github.com/k-r-i-s-h-h/calorie-Tracker)
 
 ---
 
