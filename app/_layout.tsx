@@ -45,15 +45,49 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+import { MobileWrapper } from '@/components/MobileWrapper';
+import { UserProvider, useUser } from '@/context/UserDataContext';
+import { useRouter, useSegments } from 'expo-router';
+
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <UserProvider>
+        <ProtectedLayout>
+          <MobileWrapper>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+              <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+            </Stack>
+          </MobileWrapper>
+        </ProtectedLayout>
+      </UserProvider>
     </ThemeProvider>
   );
+}
+
+function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const { userData, isLoading } = useUser();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const inAuthGroup = segments[0] === '(auth)'; // Assuming we might add auth group later, currently handling onboarding
+    const inOnboarding = segments[0] === 'onboarding';
+
+    if (!userData.hasCompletedOnboarding && !inOnboarding) {
+      // Redirect to onboarding if not completed and not already there
+      router.replace('/onboarding');
+    } else if (userData.hasCompletedOnboarding && inOnboarding) {
+      // Redirect to tabs if completed and trying to access onboarding
+      router.replace('/(tabs)');
+    }
+  }, [userData.hasCompletedOnboarding, isLoading, segments]);
+
+  return <>{children}</>;
 }
