@@ -27,9 +27,6 @@ A smart calorie tracking mobile app with AI-powered food recognition using Googl
 - **Supabase** (PostgreSQL database)
 - **Pillow** for image processing
 
-## 📱 Screenshots
-
-[Add your screenshots here]
 
 ## 🚀 Setup Instructions
 
